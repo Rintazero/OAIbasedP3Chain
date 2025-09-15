@@ -20,6 +20,9 @@ GRTAGS
 GTAGS
 tags
 
+# build
+build/
+
 # others
 nfapi_nr_interface_scf
 *.log
