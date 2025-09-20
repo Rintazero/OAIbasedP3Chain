@@ -25,7 +25,7 @@
 #
 #---------------------------------------------------------------------
 
-FROM ran-base:latest AS nr-ue-base
+FROM ran-base:rfsim_dev AS nr-ue-base
 
 FROM ran-build:rfsim_dev AS nr-ue-build
 
@@ -34,7 +34,7 @@ FROM ran-build:rfsim_dev AS nr-ue-build
 FROM ubuntu:noble AS oai-nr-ue
 ARG BUILD_OPTION
 ENV DEBIAN_FRONTEND=noninteractive
-ENV TZ=Europe/Paris
+ENV TZ=Asia/Shanghai
 
 RUN apt-get update && \
     apt-get upgrade --yes && \
