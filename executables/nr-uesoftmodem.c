@@ -392,6 +392,9 @@ int main(int argc, char **argv)
   memset(tx_max_power,0,sizeof(int)*MAX_NUM_CCs);
   // initialize logging
   logInit();
+  // modified at 20250919-1624 #my_mark
+  printf("rfsim_dev: built %s %s\n", __DATE__, __TIME__);
+  LOG_I(HW, "rfsim_dev build %s %s\n", __DATE__, __TIME__);
   // get options and fill parameters from configuration file
 
   get_options(uniqCfg); // Command-line options specific for NRUE
