@@ -1126,7 +1126,7 @@ static int rfsimulator_write_init(openair0_device *device) {
 __attribute__((__visibility__("default")))
 int device_init(openair0_device *device, openair0_config_t *openair0_cfg) {
   // modified at 2025-09-20 23:27
-  LOG_I(HW, "Simulator device init: device_init()\n");
+  LOG_I(UTIL, "RFSIM tracing: Simulator device init: device_init()\n");
   // to change the log level, use this on command line
   // --log_config.hw_log_level debug
   rfsimulator_state_t *rfsimulator = calloc(sizeof(rfsimulator_state_t), 1);
@@ -1196,6 +1196,9 @@ int device_init(openair0_device *device, openair0_config_t *openair0_cfg) {
     perror("SIGPIPE");
     exit(1);
   }
+
+  // modified at 2025-09-21 21:26
+  LOG_I(UTIL, "RFSIM tracing: device_init() done\n");
 
   return 0;
 }

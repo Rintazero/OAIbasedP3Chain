@@ -45,6 +45,12 @@
 #include "common/utils/time_manager/time_manager.h"
 #include "log.h"
 
+// modified at 2025-09-21 13:38 for RFSIM tracing: add include of log.h
+// #include "T.h"
+// #include "common/utils/LOG/log.h"
+// #include "common/utils/time_manager/time_manager.h"
+// #include "common/utils/LOG/vcd_signal_dumper.h"
+
 /*
  *  NR SLOT PROCESSING SEQUENCE
  *
@@ -962,6 +968,9 @@ static inline void apply_ntn_config(PHY_VARS_NR_UE *UE,
 
 void *UE_thread(void *arg)
 {
+  // modified at 2025-09-21 21:03 for RFSIM tracing
+  LOG_I(UTIL, "RFSIM tracing: UE thread started\n");
+
   //this thread should be over the processing thread to keep in real time
   PHY_VARS_NR_UE *UE = (PHY_VARS_NR_UE *) arg;
   //  int tx_enabled = 0;
@@ -969,6 +978,10 @@ void *UE_thread(void *arg)
   enum stream_status_e stream_status = STREAM_STATUS_UNSYNC;
   fapi_nr_config_request_t *cfg = &UE->nrUE_config;
   int tmp = openair0_device_load(&(UE->rfdevice), &UE->openair0_cfg[0]);
+
+  // modified at 2025-09-21 21:03 for RFSIM tracing
+  LOG_I(UTIL, "RFSIM tracing: openair0_device_load finished\n");
+
   AssertFatal(tmp == 0, "Could not load the device\n");
   NR_DL_FRAME_PARMS *fp = &UE->frame_parms;
   sl_nr_phy_config_request_t *sl_cfg = NULL;
@@ -1303,6 +1316,8 @@ void init_NR_UE(int nb_inst, char *uecap_file, char *reconfig_file, char *rbconf
 void init_NR_UE_threads(PHY_VARS_NR_UE *UE) {
   char thread_name[16];
   sprintf(thread_name, "UEthread_%d", UE->Mod_id);
+  // modified at 2025-09-21 13:38 for RFSIM tracing
+  LOG_I(RFSIM, "RFSIM tracing: UE thread_name=%s, UE_Mod_id=%d\n", thread_name, UE->Mod_id);
   threadCreate(&UE->main_thread, UE_thread, (void *)UE, thread_name, -1, OAI_PRIORITY_RT_MAX);
   if (!IS_SOFTMODEM_NOSTATS) {
     sprintf(thread_name, "L1_UE_stats_%d", UE->Mod_id);
