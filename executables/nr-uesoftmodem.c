@@ -90,6 +90,9 @@ unsigned short config_frames[4] = {2,9,11,13};
 #include "openair2/GNB_APP/gnb_paramdef.h"
 #include "actor.h"
 
+// modified at 20251018-2017: added NR_UE_INTERFACE test header file
+#include <openintf/NR_UE/intf_NR_UE.h>
+
 THREAD_STRUCT thread_struct;
 nrUE_params_t nrUE_params = {0};
 
@@ -392,10 +395,13 @@ int main(int argc, char **argv)
   memset(tx_max_power,0,sizeof(int)*MAX_NUM_CCs);
   // initialize logging
   logInit();
-  // modified at 20250919-1624 #my_mark
+  // modified at 20251017-1455 #my_mark
   printf("rfsim_dev: built %s %s\n", __DATE__, __TIME__);
   LOG_I(UTIL, "rfsim_dev build %s %s\n", __DATE__, __TIME__);
-  LOG_I(RFSIM, "rfsim_dev build %s %s\n", __DATE__, __TIME__);
+  int test_result = intf_NR_UE_test_func();
+  LOG_I(UTIL, "openinft test string: %s\n", intf_NR_UE_test_str);
+  LOG_I(UTIL, "openinft test function result: %d\n", test_result);
+  // LOG_I(RFSIM, "rfsim_dev build %s %s\n", __DATE__, __TIME__);
   // get options and fill parameters from configuration file
 
   get_options(uniqCfg); // Command-line options specific for NRUE

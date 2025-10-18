@@ -90,6 +90,7 @@ set (OPENAIR1_DIR    ${OPENAIR_DIR}/openair1)
 set (OPENAIR2_DIR    ${OPENAIR_DIR}/openair2)
 set (OPENAIR3_DIR    ${OPENAIR_DIR}/openair3)
 set (OPENAIR3_DIR    ${OPENAIR_DIR}/openair3)
+set (OPENINTF_DIR    ${OPENAIR_DIR}/openintf)
 set (OPENAIR_CMAKE   ${OPENAIR_DIR}/cmake_targets)
 
 project (OpenAirInterface)
@@ -1390,6 +1391,17 @@ include_directories("${OPENAIR1_DIR}/SCHED_NR_UE")
 # L3 Libs
 ##########################
 
+# Open Function Interface Library (openintf) modified at 20251018-1539
+##########################
+set(NR_UE_INTF_DIR ${OPENINTF_DIR}/NR_UE)
+
+set( NR_UE_INTF_SRC
+  ${NR_UE_INTF_DIR}/intf_NR_UE.c
+  )
+
+add_library( NR_UE_INTF ${NR_UE_INTF_SRC} )
+target_link_libraries( NR_UE_INTF PRIVATE asn1_nr_rrc_hdrs asn1_lte_rrc_hdrs)
+
 # CN libs
 ##########################
 
@@ -1918,10 +1930,11 @@ add_executable(nr-uesoftmodem
   ${PHY_INTERFACE_DIR}/queue_t.c
   )
 
+# modified at 20251018-1655: added NR_UE_INTERFACE to fix undefined reference errors
 target_link_libraries(nr-uesoftmodem PRIVATE
   -Wl,--start-group
   nr_rrc SECURITY UTIL HASHTABLE SCHED_RU_LIB SCHED_NR_UE_LIB
-  PHY_COMMON PHY_NR_COMMON PHY_NR_UE NR_L2_UE MAC_NR_COMMON NFAPI_LIB
+  PHY_COMMON PHY_NR_COMMON PHY_NR_UE NR_L2_UE NR_UE_INTF MAC_NR_COMMON NFAPI_LIB
   ITTI SIMU shlib_loader
   time_management
   -Wl,--end-group z dl)
@@ -2185,5 +2198,6 @@ add_subdirectory(nfapi)
 add_subdirectory(openair1)
 add_subdirectory(openair2)
 add_subdirectory(openair3)
+add_subdirectory(openintf)
 add_subdirectory(radio)
 add_subdirectory(tests)
