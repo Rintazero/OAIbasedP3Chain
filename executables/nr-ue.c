@@ -1317,7 +1317,7 @@ void init_NR_UE_threads(PHY_VARS_NR_UE *UE) {
   char thread_name[16];
   sprintf(thread_name, "UEthread_%d", UE->Mod_id);
   // modified at 2025-09-21 13:38 for RFSIM tracing
-  LOG_I(RFSIM, "RFSIM tracing: UE thread_name=%s, UE_Mod_id=%d\n", thread_name, UE->Mod_id);
+  // LOG_I(RFSIM, "RFSIM tracing: UE thread_name=%s, UE_Mod_id=%d\n", thread_name, UE->Mod_id);
   threadCreate(&UE->main_thread, UE_thread, (void *)UE, thread_name, -1, OAI_PRIORITY_RT_MAX);
   if (!IS_SOFTMODEM_NOSTATS) {
     sprintf(thread_name, "L1_UE_stats_%d", UE->Mod_id);

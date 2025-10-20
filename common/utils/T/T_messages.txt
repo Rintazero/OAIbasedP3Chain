@@ -1207,26 +1207,26 @@ ID = LEGACY_UTIL_TRACE
     GROUP = ALL:LEGACY_UTIL:LEGACY_GROUP_TRACE:LEGACY
     FORMAT = string,log
     
-# modified(added) at 20250930-1642: add T_messages for RFSIM
-ID = LEGACY_RFSIM_INFO
-    DESC = RFSIM legacy logs - info level
-    GROUP = ALL:LEGACY_RFSIM:LEGACY_GROUP_INFO:LEGACY
+# modified(added) at 20250930-1642: add T_messages for INTF
+ID = LEGACY_INTF_INFO
+    DESC = INTF legacy logs - info level
+    GROUP = ALL:LEGACY_INTF:LEGACY_GROUP_INFO:LEGACY
     FORMAT = string,log
-ID = LEGACY_RFSIM_ERROR
-    DESC = RFSIM legacy logs - error level
-    GROUP = ALL:LEGACY_RFSIM:LEGACY_GROUP_ERROR:LEGACY
+ID = LEGACY_INTF_ERROR
+    DESC = INTF legacy logs - error level
+    GROUP = ALL:LEGACY_INTF:LEGACY_GROUP_ERROR:LEGACY
     FORMAT = string,log
-ID = LEGACY_RFSIM_WARNING
-    DESC = RFSIM legacy logs - warning level
-    GROUP = ALL:LEGACY_RFSIM:LEGACY_GROUP_WARNING:LEGACY
+ID = LEGACY_INTF_WARNING
+    DESC = RINTF legacy logs - warning level
+    GROUP = ALL:LEGACY_INTF:LEGACY_GROUP_WARNING:LEGACY
     FORMAT = string,log
-ID = LEGACY_RFSIM_DEBUG
-    DESC = RFSIM legacy logs - debug level
-    GROUP = ALL:LEGACY_RFSIM:LEGACY_GROUP_DEBUG:LEGACY
+ID = LEGACY_INTF_DEBUG
+    DESC = INTF legacy logs - debug level
+    GROUP = ALL:LEGACY_INTF:LEGACY_GROUP_DEBUG:LEGACY
     FORMAT = string,log
-ID = LEGACY_RFSIM_TRACE
-    DESC = RFSIM legacy logs - trace level
-    GROUP = ALL:LEGACY_RFSIM:LEGACY_GROUP_TRACE:LEGACY
+ID = LEGACY_INTF_TRACE
+    DESC = RINTF legacy logs - trace level
+    GROUP = ALL:LEGACY_INTF:LEGACY_GROUP_TRACE:LEGACY
     FORMAT = string,log
 
 # this is a bad hack but I won't fix (function util_print_hex_octets

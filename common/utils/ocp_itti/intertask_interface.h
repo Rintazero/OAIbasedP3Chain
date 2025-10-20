@@ -324,6 +324,7 @@ typedef struct {
   TASK_DEF(TASK_RRC_NSA_UE, 200)      \
   TASK_DEF(TASK_RRC_NSA_NRUE, 200)    \
   TASK_DEF(TASK_NAS_NRUE, 200)        \
+  TASK_DEF(TASK_INTF_NRUE, 200)       \
   TASK_DEF(TASK_MAX, 200)
 
 #define TASK_DEF(TaskID, qUEUEsIZE) {qUEUEsIZE, #TaskID},

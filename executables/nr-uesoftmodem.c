@@ -152,6 +152,14 @@ int create_tasks_nrue(uint32_t ue_nb) {
       LOG_E(NR_RRC, "Create task for NAS UE failed\n");
       return -1;
     }
+
+    // modified at 20251018-2340: added NR_UE_INTERFACE task creation
+    LOG_I(INTF,"create TASK_INTF_NRUE \n");
+    const ittiTask_parms_t parmsINTF = {NULL, intf_nrue};
+    if (itti_create_task(TASK_INTF_NRUE, intf_nrue_task, &parmsINTF) < 0) {
+      LOG_E(INTF, "Create task for INTF NR-UE failed\n");
+      return -1;
+    }
   }
 
   itti_wait_ready(0);
@@ -398,9 +406,9 @@ int main(int argc, char **argv)
   // modified at 20251017-1455 #my_mark
   printf("rfsim_dev: built %s %s\n", __DATE__, __TIME__);
   LOG_I(UTIL, "rfsim_dev build %s %s\n", __DATE__, __TIME__);
-  int test_result = intf_NR_UE_test_func();
-  LOG_I(UTIL, "openinft test string: %s\n", intf_NR_UE_test_str);
-  LOG_I(UTIL, "openinft test function result: %d\n", test_result);
+  // int test_result = intf_NR_UE_test_func();
+  // LOG_I(UTIL, "openinft test string: %s\n", intf_NR_UE_test_str);
+  // LOG_I(UTIL, "openinft test function result: %d\n", test_result);
   // LOG_I(RFSIM, "rfsim_dev build %s %s\n", __DATE__, __TIME__);
   // get options and fill parameters from configuration file
 
