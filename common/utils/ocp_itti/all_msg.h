@@ -18,3 +18,6 @@
 #include "openair2/COMMON/e1ap_messages_def.h"
 #include "openair2/COMMON/ngap_messages_def.h"
 
+// modified at 20251020-2028: added NR_UE_INTERFACE messages definition
+#include "openintf/COMMON/intf_messages_def.h"
+

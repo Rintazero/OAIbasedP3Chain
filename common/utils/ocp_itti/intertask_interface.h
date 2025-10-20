@@ -258,6 +258,9 @@ typedef struct IttiMsgText_s {
 #include <openair3/MME_APP/mme_app.h>
 //#include <proto.h>
 
+// modified at 20251020-2348: added NR_UE_INTERFACE msg type include
+#include "openintf/COMMON/intf_messages_types.h"
+
 void *rrc_enb_process_itti_msg(void *);
 #include <openair3/SCTP/sctp_eNB_task.h>
 #include <openair3/NGAP/ngap_gNB.h>

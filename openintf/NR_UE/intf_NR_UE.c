@@ -4,9 +4,11 @@
 #include "intertask_interface.h"
 #include "intf_NR_UE.h"
 
-//#include "nr-uesoftmodem.h"
+// #include "nr-uesoftmodem.h"
 #include "common/utils/LOG/log.h"
 #include "common/utils/LOG/vcd_signal_dumper.h"
+
+// #include "openintf/COMMON/intf_messages_def.h"
 
 char intf_NR_UE_test_str[] = "OpenAirInterface NR_UE Interface Test String";
 
@@ -17,6 +19,11 @@ int intf_NR_UE_test_func() {
 // nr-ue function interface task
 void *intf_nrue_task(void *args_p){
     itti_mark_task_ready(TASK_INTF_NRUE);
+
+    MessageDef *msg = itti_alloc_new_message(TASK_INTF_NRUE, 0, INTF_HELLOWORLD_MSG);
+    INTF_HELLOWORLD_MSG(msg).num_data = 2025;
+    itti_send_msg_to_task(TASK_INTF_NRUE, 0, msg);
+
     LOG_I(INTF, "INTF NR-UE task started\n");
     while(1){
         intf_nrue(NULL);
