@@ -44,7 +44,8 @@ int intf_network_api_initialize(INTF_NETWORK_API_ID* intf_network_api_id,const c
    intf_network_api_id->send  = socket_send;
    intf_network_api_id->close = socket_close;
 
-   intf_network_api_id->endpoint = intf_network_api_id->open(SOCKET_CLIENT, host, port);
+   // SOCKET_SERVER: NR-UE use host:port; SOCKET_CLIENT: NR-UE listen host:port
+   intf_network_api_id->endpoint = intf_network_api_id->open(SOCKET_SERVER, host, port);
    if (intf_network_api_id->endpoint == NULL) {
        LOG_E(INTF, "INTF - Failed to open connection endpoint, %s\n",
               ((errno < 0) ? gai_strerror(errno) : strerror(errno)));
