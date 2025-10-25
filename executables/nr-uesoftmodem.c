@@ -131,6 +131,10 @@ uint32_t       N_RB_DL    = 106;
 
 int create_tasks_nrue(uint32_t ue_nb) {
   LOG_D(NR_RRC, "%s(ue_nb:%d)\n", __FUNCTION__, ue_nb);
+
+  // modified at 20251022-1129: add log for ue_nb info
+  LOG_I(UTIL, "Creating NR-UE tasks for %d UE(s)\n", ue_nb);
+
   itti_wait_ready(1);
 
   if (ue_nb > 0) {

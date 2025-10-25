@@ -1397,9 +1397,13 @@ set(NR_UE_INTF_DIR ${OPENINTF_DIR}/NR_UE)
 
 set( NR_UE_INTF_SRC
   ${NR_UE_INTF_DIR}/intf_NR_UE.c
+  ${OPENINTF_DIR}/COMMON/intf_network_api.c
+  ${OPENAIR3_DIR}/NAS/COMMON/UTIL/socket.c
   )
 
+
 add_library( NR_UE_INTF ${NR_UE_INTF_SRC} )
+target_include_directories(NR_UE_INTF PRIVATE ${OPENINTF_DIR} ${OPENINTF_DIR}/COMMON)
 target_link_libraries( NR_UE_INTF PRIVATE asn1_nr_rrc_hdrs asn1_lte_rrc_hdrs)
 
 # CN libs
