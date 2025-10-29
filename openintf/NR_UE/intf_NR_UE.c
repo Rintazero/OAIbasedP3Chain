@@ -30,6 +30,20 @@ int intf_NR_UE_test_func() {
 INTF_NETWORK_API_ID intf_nrue_network_api_id;
 static int udp_socket_fd = -1;
 
+// udp processer(test) triggered by receiving udp pkg
+int process_udp_pkg(INTF_NETWORK_API_ID* api_id, const char* data, size_t len){
+    if(len > 0){
+        LOG_I(INTF, "INTF NR-UE processing UDP pkg: %.*s\n", (int)len, data);
+        LOG_I(INTF, "INTF NR-UE replying to UDP pkg\n");
+        char reply[] = "Hello from INTF NR-UE";
+        ssize_t reply_len = strlen(reply);
+        api_id->send(api_id->endpoint, reply, reply_len);
+    } else {
+        LOG_W(INTF, "INTF NR-UE received empty UDP pkg\n");
+    }
+    return 0;
+}
+
 // nr-ue function interface task
 void *intf_nrue_task(void *args_p){
     itti_mark_task_ready(TASK_INTF_NRUE);
@@ -104,12 +118,7 @@ void *intf_nrue(void *notUsed){
                 // Data available on UDP socket
                 char buffer[1024];
                 ssize_t len = intf_nrue_network_api_id.recv(intf_nrue_network_api_id.endpoint, buffer, sizeof(buffer)-1);
-                if(len > 0){
-                    buffer[len] = '\0'; // Null-terminate the received data
-                    LOG_I(INTF, "INTF NR-UE received UDP data: %s\n", buffer);
-                } else {
-                    LOG_E(INTF, "INTF NR-UE failed to receive UDP data: %s\n", strerror(errno));
-                }
+                process_udp_pkg(&intf_nrue_network_api_id, buffer, len);
             } else {
                 LOG_W(INTF, "INTF NR-UE received event on unknown fd %d\n", events[i].data.fd);
             }
