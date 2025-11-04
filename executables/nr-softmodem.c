@@ -88,6 +88,9 @@ unsigned short config_frames[4] = {2,9,11,13};
 #include "openair1/SCHED_NR/sched_nr.h"
 #include "openair2/SDAP/nr_sdap/nr_sdap.h"
 
+// modified at 20251104-1938: added GNB_INTERFACE test header file
+#include <openintf/NR/intf_NR_gNB.h>
+
 pthread_cond_t nfapi_sync_cond;
 pthread_mutex_t nfapi_sync_mutex;
 int nfapi_sync_var=-1; //!< protected by mutex \ref nfapi_sync_mutex
@@ -300,6 +303,14 @@ static int create_gNB_tasks(ngran_node_t node_type, configmodule_interface_t *cf
         LOG_E(GTPU, "Create task for GTPV1U failed\n");
         return -1;
       }
+    }
+  }
+
+  // create gNB INTF task
+  if (gnb_nb > 0) {
+    if (itti_create_task (TASK_INTF_GNB, intf_gNB_task, NULL) < 0) {
+      LOG_E(INTF, "Create task for gNB INTF failed\n");
+      return -1;
     }
   }
 

@@ -1393,6 +1393,7 @@ include_directories("${OPENAIR1_DIR}/SCHED_NR_UE")
 
 # Open Function Interface Library (openintf) modified at 20251018-1539
 ##########################
+### for nr_ue intf
 set(NR_UE_INTF_DIR ${OPENINTF_DIR}/NR_UE)
 
 set( NR_UE_INTF_SRC
@@ -1405,6 +1406,19 @@ set( NR_UE_INTF_SRC
 add_library( NR_UE_INTF ${NR_UE_INTF_SRC} )
 target_include_directories(NR_UE_INTF PRIVATE ${OPENINTF_DIR} ${OPENINTF_DIR}/COMMON)
 target_link_libraries( NR_UE_INTF PRIVATE asn1_nr_rrc_hdrs asn1_lte_rrc_hdrs)
+
+### for nr intf
+set(NR_INTF_DIR ${OPENINTF_DIR}/NR)
+
+set( NR_INTF_SRC
+  ${NR_INTF_DIR}/intf_NR_gNB.c
+  ${OPENINTF_DIR}/COMMON/intf_network_api.c
+  ${OPENAIR3_DIR}/NAS/COMMON/UTIL/socket.c
+  )
+
+add_library( NR_INTF ${NR_INTF_SRC} )
+target_include_directories(NR_INTF PRIVATE ${OPENINTF_DIR} ${OPENINTF_DIR}/COMMON)
+target_link_libraries( NR_INTF PRIVATE asn1_nr_rrc_hdrs asn1_lte_rrc_hdrs)
 
 # CN libs
 ##########################
@@ -1866,7 +1880,7 @@ target_link_libraries(nr-softmodem PRIVATE
   -Wl,--start-group
   UTIL HASHTABLE SCTP_CLIENT SCHED_LIB SCHED_RU_LIB SCHED_NR_LIB PHY_NR PHY PHY_COMMON PHY_NR_COMMON PHY_RU GTPV1U SECURITY
   ITTI ${NAS_UE_LIB} lte_rrc nr_rrc
-  ngap s1ap L2_LTE_NR L2_NR MAC_NR_COMMON NFAPI_LIB NFAPI_VNF_LIB NFAPI_PNF_LIB NFAPI_USER_LIB SIMU
+  ngap s1ap L2_LTE_NR L2_NR NR_INTF MAC_NR_COMMON NFAPI_LIB NFAPI_VNF_LIB NFAPI_PNF_LIB NFAPI_USER_LIB SIMU
   x2ap f1ap m2ap m3ap e1ap shlib_loader
   time_management
   -Wl,--end-group z dl)
