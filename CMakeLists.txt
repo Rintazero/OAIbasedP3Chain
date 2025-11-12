@@ -335,6 +335,11 @@ target_link_libraries(lte_rrc PRIVATE nr_rrc)
 add_library(nr_rrc ${OPENAIR2_DIR}/RRC/NR/MESSAGES/asn1_msg.c)
 target_link_libraries(nr_rrc PUBLIC asn1_nr_rrc asn1_lte_rrc)
 
+#NR INTF
+#######
+add_library(nr_intf ${OPENINTF_DIR}/COMMON/intf_asn1_msg.c)
+target_link_libraries(nr_intf PUBLIC asn1_nr_intf)
+
 # S1AP
 ##############
 set(S1AP_DIR ${OPENAIR3_DIR}/S1AP)
@@ -1400,12 +1405,15 @@ set( NR_UE_INTF_SRC
   ${NR_UE_INTF_DIR}/intf_NR_UE.c
   ${OPENINTF_DIR}/COMMON/intf_network_api.c
   ${OPENAIR3_DIR}/NAS/COMMON/UTIL/socket.c
+  ${OPENINTF_DIR}/COMMON/intf_asn1_msg.c
   )
 
 
 add_library( NR_UE_INTF ${NR_UE_INTF_SRC} )
 target_include_directories(NR_UE_INTF PRIVATE ${OPENINTF_DIR} ${OPENINTF_DIR}/COMMON)
-target_link_libraries( NR_UE_INTF PRIVATE asn1_nr_rrc_hdrs asn1_lte_rrc_hdrs)
+# target_link_libraries( NR_UE_INTF PRIVATE nr_intf asn1_nr_rrc_hdrs asn1_lte_rrc_hdrs asn1_nr_intf_hdrs)
+target_link_libraries( NR_UE_INTF PRIVATE asn1_nr_rrc_hdrs asn1_lte_rrc_hdrs asn1_nr_intf_hdrs)
+
 
 ### for nr intf
 set(NR_INTF_DIR ${OPENINTF_DIR}/NR)
@@ -1889,6 +1897,7 @@ target_link_libraries(nr-softmodem PRIVATE pthread m CONFIG_LIB rt)
 target_link_libraries(nr-softmodem PRIVATE ${T_LIB})
 target_link_libraries(nr-softmodem PRIVATE asn1_nr_rrc_hdrs asn1_lte_rrc_hdrs)
 target_link_libraries(nr-softmodem PRIVATE asn1_nr_rrc_hdrs asn1_lte_rrc_hdrs)
+target_link_libraries(nr-softmodem PRIVATE asn1_nr_intf_hdrs)
 add_boolean_option(OAI_WLS OFF "Activate OAI's WLS driver" OFF)
 if (OAI_WLS)
     target_link_libraries(nr-softmodem PUBLIC wls_integration_lib)
@@ -1907,7 +1916,7 @@ endif()
 
 # force the generation of ASN.1 so that we don't need to wait during the build
 target_link_libraries(nr-softmodem PRIVATE
-  asn1_lte_rrc asn1_nr_rrc asn1_s1ap asn1_ngap asn1_m2ap asn1_m3ap asn1_x2ap asn1_f1ap asn1_lpp)
+  asn1_lte_rrc asn1_nr_rrc asn1_s1ap asn1_ngap asn1_m2ap asn1_m3ap asn1_x2ap asn1_f1ap asn1_lpp asn1_nr_intf)
 
 add_executable(nr-cuup
   executables/nr-cuup.c
@@ -1961,10 +1970,11 @@ target_link_libraries(nr-uesoftmodem PRIVATE pthread m CONFIG_LIB rt nr_ue_phy_m
 target_link_libraries(nr-uesoftmodem PRIVATE ${T_LIB})
 target_link_libraries(nr-uesoftmodem PRIVATE nr_nas lib_uicc usim_lib)
 target_link_libraries(nr-uesoftmodem PRIVATE asn1_nr_rrc_hdrs asn1_lte_rrc_hdrs)
+target_link_libraries(nr-uesoftmodem PRIVATE asn1_nr_intf_hdrs)
 
 # force the generation of ASN.1 so that we don't need to wait during the build
 target_link_libraries(nr-uesoftmodem PRIVATE
-                      asn1_lte_rrc asn1_nr_rrc asn1_s1ap asn1_ngap asn1_m2ap asn1_m3ap asn1_x2ap asn1_f1ap asn1_lpp)
+                      asn1_lte_rrc asn1_nr_rrc asn1_s1ap asn1_ngap asn1_m2ap asn1_m3ap asn1_x2ap asn1_f1ap asn1_lpp asn1_nr_intf)
 
 ###################################"
 # Addexecutables for tests

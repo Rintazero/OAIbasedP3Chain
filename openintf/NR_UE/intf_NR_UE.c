@@ -5,6 +5,12 @@
 #include "intertask_interface.h"
 #include "intf_NR_UE.h"
 
+// ASN1
+#include "NR_INTF-TEST-Message.h"
+
+// MSG
+#include "intf_asn1_msg.h"
+
 // #include "nr-uesoftmodem.h"
 #include "common/utils/LOG/log.h"
 #include "common/utils/LOG/vcd_signal_dumper.h"
@@ -12,12 +18,21 @@
 // intf network api include
 #include "openintf/COMMON/intf_network_api.h"
 
+// rlc api
+#include "LAYER2/nr_rlc/nr_rlc_oai_api.h"
+
+// pdcp api
+#include "nr_pdcp/nr_pdcp_oai_api.h"
+
 // net and socket includes
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <unistd.h>
 #include <errno.h>
+
+#include <string.h>
+#include <stdio.h>
 
 
 char intf_NR_UE_test_str[] = "OpenAirInterface NR_UE Interface Test String";
@@ -34,10 +49,39 @@ static int udp_socket_fd = -1;
 int process_udp_pkg(INTF_NETWORK_API_ID* api_id, const char* data, size_t len){
     if(len > 0){
         LOG_I(INTF, "INTF NR-UE processing UDP pkg: %.*s\n", (int)len, data);
-        LOG_I(INTF, "INTF NR-UE replying to UDP pkg\n");
-        char reply[] = "Hello from INTF NR-UE";
+        // LOG_I(INTF, "INTF NR-UE replying to UDP pkg\n");
+        char reply[] = "INTF NR-UE: copy that";
         ssize_t reply_len = strlen(reply);
         api_id->send(api_id->endpoint, reply, reply_len);
+        
+        char data_buf[256];
+        size_t copy_len = (len < sizeof(data_buf) - 1) ? len : (sizeof(data_buf) - 1);
+        memcpy(data_buf, data, copy_len);
+        data_buf[copy_len] = '\0';
+
+        if(strcmp(data_buf,"rrc_test") == 0){
+            LOG_I(INTF, "INTF NR-UE received rrc_test command via UDP\n");
+            // Here you can add code to trigger RRC test functions
+            MessageDef *msg = itti_alloc_new_message(TASK_INTF_NRUE, 0, INTF_HELLOWORLD_MSG);
+            INTF_HELLOWORLD_MSG(msg).num_data = 2025;
+            itti_send_msg_to_task(TASK_RRC_NRUE, 0, msg);
+        } else if(strcmp(data_buf,"send_msg_via_rlc") == 0){
+            LOG_I(INTF, "INTF NR-UE received send_msg_via_rlc command via UDP\n");
+            // Here you can add code to trigger RLC message sending
+            uint8_t buf[1024];
+            uint8_t msg_data = 7;
+            int len = do_INTF_MSG_TEST(buf, sizeof(buf), msg_data);
+            nr_rlc_srb_recv_sdu(0, 1, buf, len);
+            // nr_pdcp_data_req_srb(0, 1, 0, len, buf, deliver_pdu_srb_rlc, NULL);
+        } else if(strcmp(data_buf,"send_msg_via_pdcp") == 0){
+            LOG_I(INTF, "INTF NR-UE received send_msg_via_pdcp command via UDP\n");
+            // Here you can add code to trigger PDCP message sending
+            uint8_t buf[1024];
+            uint8_t msg_data = 7;
+            int len = do_INTF_MSG_TEST(buf, sizeof(buf), msg_data);
+            // nr_rlc_srb_recv_sdu(0, 1, buf, len);
+            nr_pdcp_data_req_srb(0, 1, 0, len, buf, deliver_pdu_srb_rlc, NULL);
+        }
     } else {
         LOG_W(INTF, "INTF NR-UE received empty UDP pkg\n");
     }
