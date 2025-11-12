@@ -470,6 +470,15 @@ rb_found:
     LOG_E(RLC, "%s:%d:%s: ERROR: pdcp_data_ind failed\n", __FILE__, __LINE__, __FUNCTION__);
     /* what to do in case of failure? for the moment: nothing */
   }
+
+  // modified at 20251112-1256 rlc pass msg to intf
+  LOG_I(RLC, "RLC passing message to interface (TODO)\n");
+  // TODO: implement message passing to interface
+  MessageDef *msg = itti_alloc_new_message(TASK_INTF_GNB, 0, INTF_PLAIN_MSG);
+  INTF_PLAIN_MSG(msg).msg_length = size;
+  INTF_PLAIN_MSG(msg).msg_data = memblock;
+  itti_send_msg_to_task(TASK_INTF_GNB, 0, msg);
+  
 }
 
 static void successful_delivery(void *_ue, nr_rlc_entity_t *entity, int sdu_id)
