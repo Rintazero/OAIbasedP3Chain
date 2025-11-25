@@ -29,4 +29,12 @@ nfapi_nr_interface_scf
 *.out
 CMakeUserPresets.json
 
-dpchain/auto
+dpchain/auto/**/log/
+dpchain/auto/**/booterKeyStore/
+dpchain/auto/**/daemon
+dpchain/auto/**/daemonClose
+dpchain/auto/**/example_didSpectrumTrade
+dpchain/auto/**/p3Chain
+dpchain/auto/**/database/
+dpchain/auto/**/accounts/
+dpchain/auto/**/booters/

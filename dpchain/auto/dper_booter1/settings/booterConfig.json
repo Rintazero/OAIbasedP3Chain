@@ -1,0 +1,17 @@
+{
+"BooterKeyAddress": "",
+"BootstrapNodesFilePath": "./booters/booter.txt",
+"CentralConfigMode": true,
+"GroupCount": 2,
+"GroupFollower": 3,
+"GroupLeader": 1,
+"InitBooterAddress": "192.168.71.140:30300",
+"IsDisturbBooterURL": true,
+"KeyStoreDir": "./booterKeyStore",
+"ListenAddress": "192.168.71.140:2013",
+"MaxPeerNum": 10,
+"NATKind": "Any",
+"NewAddressMode": true,
+"ServerName": "booter",
+"TotalDperCount": 8
+}
