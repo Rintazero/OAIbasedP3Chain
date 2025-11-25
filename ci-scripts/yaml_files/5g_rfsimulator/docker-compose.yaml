@@ -106,6 +106,7 @@ services:
                 ipv4_address: 192.168.71.140
         volumes:
             - ../../conf_files/gnb.sa.band78.106prb.rfsim.yaml:/opt/oai-gnb/etc/gnb.yaml
+            - ../../../dpchain_auto_delpoy_tool:/dpchain
         healthcheck:
             test: /bin/bash -c "pgrep nr-softmodem"
             start_period: 10s
@@ -133,6 +134,7 @@ services:
              - /dev/net/tun:/dev/net/tun
         volumes:
             - ../../conf_files/nrue.uicc.yaml:/opt/oai-nr-ue/etc/nr-ue.yaml
+            - ../../../dpchain_auto_delpoy_tool:/dpchain
         healthcheck:
             test: /bin/bash -c "pgrep nr-uesoftmodem"
             start_period: 10s
