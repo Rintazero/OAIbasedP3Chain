@@ -6,6 +6,12 @@
 #include "intertask_interface.h"
 #include "intf_NR_gNB.h"
 
+// ASN1
+#include "NR_INTF-TEST-Message.h"
+
+// MSG
+#include "intf_asn1_msg.h"
+
 // #include "nr-uesoftmodem.h"
 #include "common/utils/LOG/log.h"
 #include "common/utils/LOG/vcd_signal_dumper.h"
@@ -94,7 +100,10 @@ void *intf_gNB(void *notUsed){
                 // intf_nrgnb_network_api_id.close(intf_nrgnb_network_api_id.endpoint);
                 itti_exit_task();
                 break;
-
+            case INTF_PLAIN_MSG:
+                LOG_I(INTF, "instance %ld: INTF_PLAIN_MSG received from nr_rlc_oai_api-deliver_sdu, length %d\n", instance, INTF_PLAIN_MSG(msg_p).msg_length);
+                do_INTF_MSG_DECODE_TEST(INTF_PLAIN_MSG(msg_p).msg_data, INTF_PLAIN_MSG(msg_p).msg_length);
+                break;
             default:
                 LOG_W(INTF, "instance %ld: Unhandled INTF message %s\n", instance, ITTI_MSG_NAME(msg_p));
                 break;

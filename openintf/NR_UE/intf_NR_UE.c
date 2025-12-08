@@ -69,15 +69,17 @@ int process_udp_pkg(INTF_NETWORK_API_ID* api_id, const char* data, size_t len){
             LOG_I(INTF, "INTF NR-UE received send_msg_via_rlc command via UDP\n");
             // Here you can add code to trigger RLC message sending
             uint8_t buf[1024];
-            uint8_t msg_data = 7;
+            long msg_data = 125; // as it defined in ASN.1, val must be in (0...255)
             int len = do_INTF_MSG_TEST(buf, sizeof(buf), msg_data);
+            // do_INTF_MSG_DECODE_TEST(buf, len);
+            // LOG_I(INTF, "ASN1 buf: %.*s\n", len, buf);
             nr_rlc_srb_recv_sdu(0, 1, buf, len);
             // nr_pdcp_data_req_srb(0, 1, 0, len, buf, deliver_pdu_srb_rlc, NULL);
         } else if(strcmp(data_buf,"send_msg_via_pdcp") == 0){
             LOG_I(INTF, "INTF NR-UE received send_msg_via_pdcp command via UDP\n");
             // Here you can add code to trigger PDCP message sending
             uint8_t buf[1024];
-            uint8_t msg_data = 7;
+            long msg_data = 10;
             int len = do_INTF_MSG_TEST(buf, sizeof(buf), msg_data);
             // nr_rlc_srb_recv_sdu(0, 1, buf, len);
             nr_pdcp_data_req_srb(0, 1, 0, len, buf, deliver_pdu_srb_rlc, NULL);

@@ -11,7 +11,7 @@
 
 #include "NR_INTF-TEST-Message.h"
 
-int do_INTF_MSG_TEST(uint8_t *buffer, size_t buffer_size, uint8_t int_data) {
+int do_INTF_MSG_TEST(uint8_t *buffer, size_t buffer_size, long int_data) {
     NR_INTF_TEST_Message_t intf_test_msg;
     memset(&intf_test_msg, 0, sizeof(NR_INTF_TEST_Message_t));
     
@@ -28,4 +28,31 @@ int do_INTF_MSG_TEST(uint8_t *buffer, size_t buffer_size, uint8_t int_data) {
     ASN_STRUCT_FREE_CONTENTS_ONLY(asn_DEF_NR_INTF_TEST_Message, &intf_test_msg);
 
     return ((enc_rval.encoded+7)/8);
+}
+
+void do_INTF_MSG_DECODE_TEST(uint8_t *buf, uint32_t len){
+    // 1. 声明目标结构体指针 和 解码返回值
+    NR_INTF_TEST_Message_t *intf_test_msg = NULL;
+    asn_dec_rval_t dec_rval;
+
+    // 2. 调用解码函数
+    dec_rval = uper_decode_complete(NULL,
+                                   &asn_DEF_NR_INTF_TEST_Message,
+                                   (void **)&intf_test_msg,
+                                   buf,
+                                   len);
+    
+    // 3. 检查解码结果
+    if (dec_rval.code != RC_OK) {
+        LOG_E(INTF, "ASN1 message decoding failed (code=%d)!\n", dec_rval.code);
+        ASN_STRUCT_FREE_CONTENTS_ONLY(asn_DEF_NR_INTF_TEST_Message, intf_test_msg);
+        return;
+    }
+
+    // 4. 访问数据
+    LOG_I(INTF, "INTF_TEST_Message decoded: int_data=%ld\n", intf_test_msg->int_data);
+
+    // 5. 释放内存
+    ASN_STRUCT_FREE_CONTENTS_ONLY(asn_DEF_NR_INTF_TEST_Message, intf_test_msg);
+    
 }

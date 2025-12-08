@@ -1422,11 +1422,13 @@ set( NR_INTF_SRC
   ${NR_INTF_DIR}/intf_NR_gNB.c
   ${OPENINTF_DIR}/COMMON/intf_network_api.c
   ${OPENAIR3_DIR}/NAS/COMMON/UTIL/socket.c
+  ${OPENINTF_DIR}/COMMON/intf_asn1_msg.c
   )
 
 add_library( NR_INTF ${NR_INTF_SRC} )
 target_include_directories(NR_INTF PRIVATE ${OPENINTF_DIR} ${OPENINTF_DIR}/COMMON)
-target_link_libraries( NR_INTF PRIVATE asn1_nr_rrc_hdrs asn1_lte_rrc_hdrs)
+# target_link_libraries( NR_INTF PRIVATE asn1_nr_rrc_hdrs asn1_lte_rrc_hdrs)
+target_link_libraries( NR_INTF PRIVATE asn1_nr_rrc_hdrs asn1_lte_rrc_hdrs asn1_nr_intf_hdrs)
 
 # CN libs
 ##########################

@@ -473,10 +473,14 @@ rb_found:
 
   // modified at 20251112-1256 rlc pass msg to intf
   LOG_I(RLC, "RLC passing message to interface (TODO)\n");
-  // TODO: implement message passing to interface
-  MessageDef *msg = itti_alloc_new_message(TASK_INTF_GNB, 0, INTF_PLAIN_MSG);
+  // Create a separate memory block for the INTF task to avoid dangling pointer issues,
+  // as the original 'memblock' is owned and will be freed by the PDCP layer.
+  MessageDef *msg = itti_alloc_new_message(TASK_RLC_ENB, 0, INTF_PLAIN_MSG);
+  uint8_t *intf_memblock = itti_malloc(TASK_RLC_ENB, TASK_INTF_GNB, size);
+  AssertFatal(intf_memblock != NULL, "Could not allocate memory for INTF message\n");
+  memcpy(intf_memblock, buf, size);
   INTF_PLAIN_MSG(msg).msg_length = size;
-  INTF_PLAIN_MSG(msg).msg_data = memblock;
+  INTF_PLAIN_MSG(msg).msg_data = intf_memblock;
   itti_send_msg_to_task(TASK_INTF_GNB, 0, msg);
   
 }
